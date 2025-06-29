@@ -9,31 +9,128 @@ Este é um teste técnico para desenvolvedores da Alloy, consistindo na implemen
 O candidato deve implementar uma aplicação completa de gerenciamento de tarefas que demonstre conhecimentos em:
 
 - Desenvolvimento de APIs RESTful com Laravel
-- Frontend moderno com Vue.js e Pinia
-- Gerenciamento de banco de dados SQLite
-- Sistema de filas e jobs em Laravel
-- Implementação de cache e invalidação
-- Soft deletes
-- Integração frontend/backend
+- Frontend com Vue.js incluindo gerenciamento de estado
+- Integração entre backend e frontend
+- Banco de dados e migrations
+- Testes automatizados
 
-## Stack Tecnológica
+## Requisitos para Execução
 
-### Backend
-- **Laravel 12.x** - Framework PHP
-- **SQLite** - Banco de dados
-- **PHP 8.2+** - Linguagem de programação
+- Docker e Docker Compose
+- Git
 
-### Frontend
-- **Vue.js 3.4** - Framework JavaScript
-- **Pinia 2.1** - Gerenciamento de estado
-- **Vite 6.3** - Build tool
-- **TailwindCSS 4.0** - Framework CSS
+## Como Executar com Laravel Sail
 
-### Ferramentas de Desenvolvimento
-- **Laravel Vite Plugin** - Integração Vite/Laravel
-- **Concurrently** - Execução paralela de comandos
-- **Laravel Pail** - Log viewer
-- **PHPUnit** - Testes unitários
+O Laravel Sail é uma interface de linha de comando leve para interagir com o ambiente Docker do Laravel. Siga os passos abaixo para executar o projeto:
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/seu-usuario/testealloylaravel.git
+cd testealloylaravel
+```
+
+### 2. Configure o ambiente
+
+Copie o arquivo de exemplo de variáveis de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+### 3. Inicialize o Laravel Sail
+
+Se você está executando o Sail pela primeira vez, execute:
+
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+### 4. Inicie os contêineres Docker
+
+```bash
+./vendor/bin/sail up -d
+```
+
+### 5. Configure a aplicação
+
+Execute as migrations para criar as tabelas no banco de dados:
+
+```bash
+./vendor/bin/sail artisan migrate
+```
+
+Opcionalmente, você pode popular o banco de dados com dados de exemplo:
+
+```bash
+./vendor/bin/sail artisan db:seed
+```
+
+### 6. Instale as dependências JavaScript e compile os assets
+
+```bash
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
+```
+
+### 7. Acesse a aplicação
+
+A aplicação estará disponível em:
+
+- Frontend: [http://localhost](http://localhost)
+- API: [http://localhost/api/tasks](http://localhost/api/tasks)
+
+## Comandos Úteis do Laravel Sail
+
+- Iniciar os contêineres: `./vendor/bin/sail up -d`
+- Parar os contêineres: `./vendor/bin/sail down`
+- Executar comandos do Artisan: `./vendor/bin/sail artisan [comando]`
+- Executar comandos do NPM: `./vendor/bin/sail npm [comando]`
+- Executar comandos do Composer: `./vendor/bin/sail composer [comando]`
+- Executar testes: `./vendor/bin/sail test`
+- Acessar o terminal do contêiner: `./vendor/bin/sail shell`
+- Verificar logs: `./vendor/bin/sail logs`
+
+## Banco de Dados
+
+Por padrão, o Laravel Sail configura um banco de dados MySQL. As credenciais estão definidas no arquivo `.env`. Você pode acessar o banco de dados via:
+
+```
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
+
+## Testes
+
+Execute os testes automatizados com:
+
+```bash
+./vendor/bin/sail test
+```
+
+## Funcionalidades da Aplicação
+
+- Visualização de todas as tarefas
+- Criação de novas tarefas
+- Edição de tarefas existentes
+- Exclusão de tarefas
+- Marcação de tarefas como concluídas
+- As tarefas concluídas são automaticamente removidas após 10 minutos
+
+## Tecnologias Utilizadas
+
+- **Backend:** Laravel 12, PHP 8.2
+- **Frontend:** Vue.js 3, Tailwind CSS
+- **Banco de Dados:** MySQL
+- **Outros:** Docker, Laravel Sail, Pinia, Axios
 
 ## Estrutura do Projeto
 
@@ -295,5 +392,3 @@ Para dúvidas sobre o teste, entre em contato com a equipe de desenvolvimento da
 ---
 
 **Boa sorte! 🚀**
-
-
