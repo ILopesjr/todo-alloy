@@ -20,12 +20,12 @@
         <link href="images/webclip.png" rel="apple-touch-icon">
 
         <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @endif
     </head>
 
     <body class="body">
-        <div id="app"></div>
+        <div id="app" class="flex justify-center items-center w-full min-h-screen">
+            <tasks-container></tasks-container>
+        </div>
     </body>
 </html>
