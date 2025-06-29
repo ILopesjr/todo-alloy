@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class TaskService
 {
-    protected const CACHE_TAG = 'tasks';
+    protected const CACHE_PREFIX = 'tasks';
     protected const CACHE_TTL = 3600; // 1 hora
 
     /**
@@ -17,7 +17,7 @@ class TaskService
      */
     public function getAllTasks(): Collection
     {
-        return Cache::tags(self::CACHE_TAG)->remember('all_tasks', self::CACHE_TTL, function () {
+        return Cache::remember(self::CACHE_PREFIX . '.all_tasks', self::CACHE_TTL, function () {
             return Task::orderBy('created_at', 'desc')->get();
         });
     }
@@ -37,8 +37,8 @@ class TaskService
      */
     public function findTaskById(int $id): ?Task
     {
-        $cacheKey = "task_{$id}";
-        return Cache::tags(self::CACHE_TAG)->remember($cacheKey, self::CACHE_TTL, function () use ($id) {
+        $cacheKey = self::CACHE_PREFIX . ".task_{$id}";
+        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($id) {
             return Task::findOrFail($id);
         });
     }
@@ -84,6 +84,6 @@ class TaskService
      */
     public function invalidateCache(): void
     {
-        Cache::tags(self::CACHE_TAG)->flush();
+        Cache::forget(self::CACHE_PREFIX . '.all_tasks');
     }
 }
