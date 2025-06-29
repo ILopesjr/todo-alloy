@@ -8,7 +8,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('tasks')->group(function () {
-    Route::apiResource('/', TaskController::class)->parameters(['' => 'task']);
-    Route::patch('/{task}/toggle', [TaskController::class, 'toggle']);
-});
+Route::apiResource('tasks', TaskController::class);
+Route::patch('tasks/{task}/toggle', [TaskController::class, 'toggle']);
